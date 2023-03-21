@@ -45,8 +45,8 @@ public class PersonDB implements CrudDB<Person> {
             while (rst.next())
                 person = new Person(
                         rst.getString("uuid"),
-                        rst.getString("firstName"),
-                        rst.getString("lastName"),
+                        rst.getString("first_name"),
+                        rst.getString("last_name"),
                         rst.getString("birthday"),
                         rst.getString("gender"),
                         rst.getString("created_at"),
@@ -68,8 +68,8 @@ public class PersonDB implements CrudDB<Person> {
             while (rst.next())
                 persons.add(new Person(
                         rst.getString("uuid"),
-                        rst.getString("firstName"),
-                        rst.getString("lastName"),
+                        rst.getString("first_name"),
+                        rst.getString("last_name"),
                         rst.getString("birthday"),
                         rst.getString("gender"),
                         rst.getString("created_at"),
@@ -99,7 +99,7 @@ public class PersonDB implements CrudDB<Person> {
 
     @Override
     public boolean update(Person person) {
-        String sql = "UPDATE person SET firstName=?, lastName=?, birthday=?, gender=?, updated_at=? WHERE uuid = ?";
+        String sql = "UPDATE person SET first_name=?, last_name=?, birthday=?, gender=?, updated_at=? WHERE uuid = ?";
         try (Connection conn = DB.open();
                 PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setString(1, person.getFirstName());

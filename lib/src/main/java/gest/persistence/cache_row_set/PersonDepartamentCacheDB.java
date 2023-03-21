@@ -12,21 +12,19 @@ import javax.sql.rowset.CachedRowSet;
 import gest.interfaces.CrudDB;
 import gest.util.ConstantDateFormat;
 import gest.connection.DBRowSet;
-import gest.entity.Person;
+import gest.entity.PersonDepartament;
 
-public class PersonCacheDB implements CrudDB<Person> {
+public class PersonDepartamentCacheDB implements CrudDB<PersonDepartament> {
 
     @Override
-    public boolean add(Person person) {
-        String sql = "SELECT * FROM person LIMIT 1";
+    public boolean add(PersonDepartament personDepartament) {
+        String sql = "SELECT * FROM person_departament LIMIT 1";
         try (CachedRowSet cst = DBRowSet.openCached()) {
             cst.setCommand(sql);
             cst.execute();
             cst.moveToInsertRow();
-            cst.updateString("first_name", person.getFirstName());
-            cst.updateString("last_name", person.getLastName());
-            cst.updateString("birthday", person.getBirthday().toString());
-            cst.updateString("gender", person.getGender().name());
+            cst.updateString("person_uuid", personDepartament.getPerson().getId().toString());
+            cst.updateString("departament_uuid", personDepartament.getDepartament().getId().toString());
             cst.updateString("created_at", LocalDateTime.now().format(ConstantDateFormat.FORMAT_LOCALCURRENT_MYSQL));
             cst.insertRow();
             cst.beforeFirst();
@@ -37,58 +35,52 @@ public class PersonCacheDB implements CrudDB<Person> {
     }
 
     @Override
-    public Optional<Person> find(UUID id) {
-        String sql = "SELECT * FROM person WHERE uuid=? LIMIT 1";
-        Person person = new Person();
+    public Optional<PersonDepartament> find(UUID id) {
+        String sql = "SELECT * FROM person_departament WHERE uuid=? LIMIT 1";
+        PersonDepartament personDepartament = new PersonDepartament();
         try (CachedRowSet cst = DBRowSet.openCached()) {
             cst.setCommand(sql);
             cst.setString(1, id.toString());
             cst.execute();
             cst.next();
-            person = new Person(
+            personDepartament = new PersonDepartament(
                     cst.getString("uuid"),
-                    cst.getString("first_name"),
-                    cst.getString("last_name"),
-                    cst.getString("birthday"),
-                    cst.getString("gender"),
+                    cst.getString("person_uuid"),
+                    cst.getString("departament_uuid"),
                     cst.getString("created_at"),
                     cst.getString("updated_at"));
-            return person.getId() == null ? Optional.empty() : Optional.of(person);
+            return personDepartament.getId() == null ? Optional.empty() : Optional.of(personDepartament);
         } catch (SQLException e) {
             return Optional.empty();
         }
     }
 
     @Override
-    public List<Person> findAll() {
-        String sql = "SELECT * FROM person";
-        List<Person> persons = new ArrayList<>();
+    public List<PersonDepartament> findAll() {
+        String sql = "SELECT * FROM person_departament";
+        List<PersonDepartament> personDepartaments = new ArrayList<>();
         try (CachedRowSet cst = DBRowSet.openCached()) {
             cst.setCommand(sql);
             cst.execute();
-            new java.text.SimpleDateFormat();
             while (cst.next())
-                persons.add(new Person(
+                personDepartaments.add(new PersonDepartament(
                         cst.getString("uuid"),
-                        cst.getString("first_name"),
-                        cst.getString("last_name"),
-                        cst.getString("birthday"),
-                        cst.getString("gender"),
-                        cst.getString("created_at").replace(".0", ""),
-                        cst.getString("updated_at").replace(".0", "")));
-
+                        cst.getString("person_uuid"),
+                        cst.getString("departament_uuid"),
+                        cst.getString("created_at"),
+                        cst.getString("updated_at")));
         } catch (SQLException e) {
             return List.of();
         }
-        return persons;
+        return personDepartaments;
     }
 
     @Override
-    public boolean delete(Person person) {
-        String sql = "SELECT * FROM person WHERE uuid=? LIMIT 1";
+    public boolean delete(PersonDepartament personDepartament) {
+        String sql = "SELECT * FROM person_departament WHERE uuid=? LIMIT 1";
         try (CachedRowSet cst = DBRowSet.openCached()) {
             cst.setCommand(sql);
-            cst.setString(1, person.getId().toString());
+            cst.setString(1, personDepartament.getId().toString());
             cst.execute();
             cst.next();
             cst.deleteRow();
@@ -101,26 +93,23 @@ public class PersonCacheDB implements CrudDB<Person> {
 
     @Override
     public boolean delete(UUID id) {
-        return delete(new Person(id));
+        return delete(new PersonDepartament(id));
     }
 
     @Override
-    public boolean update(Person person) {
-        String sql = "SELECT * FROM person WHERE uuid=? LIMIT 1";
+    public boolean update(PersonDepartament personDepartament) {
+        String sql = "SELECT * FROM person_departament WHERE uuid=? LIMIT 1";
         try (CachedRowSet cst = DBRowSet.openCached()) {
             cst.setCommand(sql);
-            cst.setString(1, person.getId().toString());
+            cst.setString(1, personDepartament.getId().toString());
             cst.execute();
             cst.next();
-            cst.updateString("first_name", person.getFirstName());
-            cst.updateString("last_name", person.getLastName());
-            cst.updateString("birthday", person.getBirthday().toString());
-            cst.updateString("gender", person.getGender().name());
+            cst.updateString("person_uuid", personDepartament.getPerson().getId().toString());
+            cst.updateString("departament_uuid", personDepartament.getDepartament().getId().toString());
             cst.updateString("updated_at", LocalDateTime.now().format(ConstantDateFormat.FORMAT_LOCALCURRENT_MYSQL));
             cst.updateRow();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }

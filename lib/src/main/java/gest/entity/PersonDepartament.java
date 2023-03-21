@@ -1,5 +1,6 @@
 package gest.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,12 +12,14 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
 @AllArgsConstructor
-public class PersonDepartament {
-
+@NoArgsConstructor
+public class PersonDepartament implements Serializable{
+    private static final long serialVersionUID = 2405172041950251807L;
     private UUID id;
     private Person person;
     private Departament departament;

@@ -1,5 +1,6 @@
 package gest.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -11,8 +12,8 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class Person {
-
+public class Person implements Serializable {
+    private static final long serialVersionUID = 3905542041950251007L;
     private UUID id;
     private String firstName;
     private String lastName;
