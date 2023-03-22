@@ -14,11 +14,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonDepartament implements Serializable{
+public class PersonDepartament implements Serializable {
     private static final long serialVersionUID = 2405172041950251807L;
     private UUID id;
     private Person person;
@@ -28,10 +29,12 @@ public class PersonDepartament implements Serializable{
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
+    @ToString.Exclude
     private CrudDB<Person> personDB = new PersonDB();
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
+    @ToString.Exclude
     private CrudDB<Departament> departamentDB = new DepartamentDB();
 
     public PersonDepartament(UUID id) {
