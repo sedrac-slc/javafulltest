@@ -1,17 +1,22 @@
 package gest.entity;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import gest.enums.Gender;
 import gest.util.ConstantDateFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Person implements Serializable {
     private static final long serialVersionUID = 3905542041950251007L;
     private UUID id;
@@ -21,9 +26,6 @@ public class Person implements Serializable {
     private Gender gender;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-    public Person() {
-    }
 
     public Person(UUID id) {
         this.id = id;
@@ -38,6 +40,11 @@ public class Person implements Serializable {
         this.gender = Gender.valueOf(gender);
         this.createdAt = LocalDateTime.parse(createdAt, ConstantDateFormat.FORMAT_LOCALCURRENT_LOCAL);
         this.updatedAt = LocalDateTime.parse(updatedAt, ConstantDateFormat.FORMAT_LOCALCURRENT_LOCAL);
+    }
+
+    public static Person fromString(String two) throws ParseException {
+
+        throw new ParseException(two, 0);
     }
 
 }

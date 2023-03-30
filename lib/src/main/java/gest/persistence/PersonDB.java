@@ -14,6 +14,7 @@ import gest.interfaces.CrudDB;
 import gest.util.ConstantDateFormat;
 import gest.connection.DB;
 import gest.entity.Person;
+import gest.file.PersonFile;
 
 public class PersonDB implements CrudDB<Person> {
 
@@ -28,6 +29,7 @@ public class PersonDB implements CrudDB<Person> {
             pst.setString(4, person.getGender().name());
             pst.setString(5, LocalDateTime.now().format(ConstantDateFormat.FORMAT_LOCALCURRENT_MYSQL));
             pst.executeUpdate();
+            PersonFile.add(person);
             return true;
         } catch (SQLException e) {
             return false;

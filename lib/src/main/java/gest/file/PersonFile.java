@@ -1,13 +1,15 @@
 package gest.file;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import gest.entity.Person;
@@ -47,7 +49,7 @@ public final class PersonFile extends StorageFile {
         }
     }
 
-    public static void addList(Person person) {
+    public static void add(Person person) {
         Path path = Paths.get(FILE_LIST);
         try (BufferedWriter bfw = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
             if (Files.size(path) > 0)
@@ -56,6 +58,35 @@ public final class PersonFile extends StorageFile {
             bfw.flush();
         } catch (IOException e) {
 
+        }
+    }
+
+    public static void imprimeBufferedReader() {
+        Path path = Paths.get(FILE_LIST);
+        try (BufferedReader bfr = Files.newBufferedReader(path)) {
+            String row = "";
+            while ((row = bfr.readLine()) != null)
+                System.out.println(row);
+        } catch (IOException e) {
+
+        }
+    }
+
+    public static List<String> list() {
+        try {
+            Path path = Paths.get(FILE_LIST);
+            return Files.readAllLines(path, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            return List.of();
+        }
+    }
+
+    public static void imprime() {
+        Path path = Paths.get(FILE_LIST);
+        try {
+            Files.lines(path, StandardCharsets.UTF_8).forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
