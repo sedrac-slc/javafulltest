@@ -42,9 +42,24 @@ public class Person implements Serializable {
         this.updatedAt = LocalDateTime.parse(updatedAt, ConstantDateFormat.FORMAT_LOCALCURRENT_LOCAL);
     }
 
-    public static Person fromString(String two) throws ParseException {
+    public static Person fromString(String text) throws ParseException {
+        String rgx = "Person\\(id=.+, firstName=.+, lastName=.+, birthday=.+, gender=(FEMALE|MALE), createdAt=.+, updatedAt=.+\\)";
+        if (!text.matches(rgx))
+            throw new ParseException("Not convert", 0);
+        System.out.println();
+        return null;
+    }
 
-        throw new ParseException(two, 0);
+    public String toJson() {
+        return "{"
+                + "\"id\": \"" + id + "\","
+                + "\"firstName\": \"" + firstName + "\","
+                + "\"lastName\": \"" + lastName + "\","
+                + "\"birthday\": \"" + birthday + "\","
+                + "\"gender\": \"" + gender + "\","
+                + "\"createdAt\": \"" + createdAt + "\","
+                + "\"updatedAt\": \"" + updatedAt + "\""
+                + "}";
     }
 
 }

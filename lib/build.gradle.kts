@@ -29,6 +29,12 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly("org.projectlombok:lombok:1.18.24")
+
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.0")
+    
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0")
+
+    implementation("com.google.code.gson:gson:2.8.9")
 }
 
 testing {
